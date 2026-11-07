@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080d1a" />
+  <title>ShiftFlow — Personal Shift Dashboard</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-scene="work">
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="noise"></div>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="ShiftFlow home">
+        <span class="brand-mark">S</span>
+        <span>shift<span class="brand-light">flow</span></span>
+      </a>
+      <div class="topbar-right">
+        <div class="live-pill"><span class="live-dot"></span> LIVE DASHBOARD</div>
+        <button class="icon-button" id="notificationPermission" title="Enable browser notifications" aria-label="Enable browser notifications">♢</button>
+        <button class="avatar" title="Personal dashboard">SB</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow" id="greeting">YOUR WORKSPACE</p>
+          <h1>Make every<br /><span>minute count.</span></h1>
+          <p class="hero-sub">Your shift, your rhythm. Stay one step ahead.</p>
+          <div class="date-line"><span class="date-dot"></span><span id="todayLabel">Loading date…</span></div>
+        </div>
+        <div class="clock-panel panel">
+          <div class="clock-heading"><span>LOCAL TIME</span><span class="clock-live">● LIVE</span></div>
+          <div class="clock-main" id="istClock">--:--<small>--</small></div>
+          <div class="clock-meta"><span>INDIA · IST</span><span id="istDate">---</span></div>
+          <div class="clock-divider"></div>
+          <div class="world-clock">
+            <div><span class="world-label">PACIFIC TIME</span><strong id="ptClock">--:--</strong></div>
+            <span class="timezone-tag" id="ptZone">PT</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-heading">
+        <div><p class="eyebrow">YOUR SHIFT AT A GLANCE</p><h2>Tonight's overview</h2></div>
+        <span class="weekday-tag" id="shiftDay">WEEKDAY SHIFT</span>
+      </section>
+
+      <section class="overview-grid">
+        <article class="panel ring-panel">
+          <div class="panel-topline"><span class="panel-label">SHIFT COMPLETION</span><span class="live-indicator">IN PROGRESS</span></div>
+          <div class="ring-wrap">
+            <svg class="progress-ring" viewBox="0 0 220 220" role="img" aria-label="Shift completion progress">
+              <circle class="ring-track" cx="110" cy="110" r="92"></circle>
+              <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="92"></circle>
+            </svg>
+            <div class="ring-center">
+              <span class="ring-caption">COMPLETED</span>
+              <strong id="completionPercent">0%</strong>
+              <span class="ring-small" id="ringTime">Shift not started</span>
+            </div>
+          </div>
+          <div class="ring-footer"><span><i class="legend-dot blue"></i>Elapsed</span><span><i class="legend-dot muted"></i>Remaining</span></div>
+        </article>
+
+        <article class="panel current-panel">
+          <div class="panel-topline"><span class="panel-label">CURRENT ACTIVITY</span><span class="activity-badge" id="activityBadge">UP NEXT</span></div>
+          <div class="activity-title-row"><div><p class="muted-label">RIGHT NOW</p><h3 id="currentActivity">Loading…</h3></div><div class="activity-icon" id="activityIcon">◷</div></div>
+          <div class="countdown-label" id="countdownLabel">TIME REMAINING</div>
+          <div class="countdown" id="countdown">--:--:--</div>
+          <div class="next-row"><span>Next up</span><strong id="nextActivity">—</strong><span id="nextTime">—</span></div>
+          <div class="progress-track"><div class="progress-fill" id="activityProgress"></div></div>
+          <div class="current-times"><span id="currentStart">--</span><span id="currentEnd">--</span></div>
+        </article>
+
+        <article class="panel stats-panel">
+          <div class="panel-topline"><span class="panel-label">WEEKLY PERFORMANCE</span><span class="trend-tag">THIS WEEK</span></div>
+          <div class="stats-main"><div><strong id="tasksDone">0</strong><span>Tasks completed</span></div><div class="stats-change">↗ <span id="completionRate">0%</span></div></div>
+          <div class="chart-wrap">
+            <div class="chart-y-labels"><span>8</span><span>6</span><span>4</span><span>2</span><span>0</span></div>
+            <div class="chart" id="weeklyChart" aria-label="Weekly completed tasks chart"></div>
+          </div>
+          <div class="chart-legend"><span><i class="legend-dot blue"></i>Tasks completed</span><span id="weekRange">Mon – Sun</span></div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel schedule-panel">
+          <div class="section-card-heading"><div><p class="eyebrow">YOUR TIMELINE</p><h2>Shift schedule</h2></div><button class="text-button" id="editScheduleBtn">Edit schedule ↗</button></div>
+          <div id="scheduleList" class="schedule-list"></div>
+        </article>
+
+        <article class="panel tasks-panel">
+          <div class="section-card-heading"><div><p class="eyebrow">STAY ON TRACK</p><h2>Today's tasks</h2></div><span class="task-count" id="taskCount">0 ITEMS</span></div>
+          <form id="taskForm" class="task-form">
+            <input id="taskInput" type="text" maxlength="90" placeholder="Add a task for today…" required />
+            <button type="submit" aria-label="Add task">+</button>
+          </form>
+          <div id="taskList" class="task-list"></div>
+          <div class="task-footer"><span id="taskSummary">Small steps, steady progress.</span><button class="subtle-button" id="clearCompleted">Clear completed</button></div>
+        </article>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel reminder-panel">
+          <div class="section-card-heading"><div><p class="eyebrow">DON'T FORGET</p><h2>Upcoming reminder</h2></div><span class="reminder-icon">↗</span></div>
+          <div class="reminder-content"><div class="reminder-date"><strong>THU</strong><span>04:00 AM</span></div><div><h3>Book your cab</h3><p>Weekly reminder · Every Thursday</p></div></div>
+          <button class="outline-button" id="testReminder">Test reminder</button>
+        </article>
+        <article class="panel scene-panel">
+          <div><p class="eyebrow">SET YOUR ATMOSPHERE</p><h2>Dynamic scenes</h2><p class="scene-description">The dashboard subtly shifts with your work rhythm.</p></div>
+          <div class="scene-options">
+            <button class="scene-option active" data-scene-choice="work"><span class="scene-swatch work-swatch"></span>Focus</button>
+            <button class="scene-option" data-scene-choice="break"><span class="scene-swatch break-swatch"></span>Recharge</button>
+            <button class="scene-option" data-scene-choice="night"><span class="scene-swatch night-swatch"></span>Night</button>
+          </div>
+        </article>
+      </section>
+      <footer><span>SHIFTFLOW <b>·</b> YOUR PERSONAL SHIFT ASSISTANT</span><span>All times displayed in IST unless specified.</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="alertBackdrop" aria-hidden="true">
+    <section class="alert-modal" role="dialog" aria-modal="true" aria-labelledby="alertTitle">
+      <div class="alert-orbit"></div><div class="alert-symbol" id="alertSymbol">✦</div>
+      <p class="eyebrow" id="alertKicker">SCHEDULE ALERT</p>
+      <h2 id="alertTitle">Time for your next activity</h2>
+      <p id="alertMessage">Your schedule is ready.</p>
+      <div class="alert-actions"><button class="primary-button" id="ackAlert">Got it</button><button class="secondary-button" id="snoozeAlert">Remind me in 5 min</button></div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="scheduleBackdrop" aria-hidden="true">
+    <section class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="scheduleModalTitle">
+      <div class="modal-heading"><div><p class="eyebrow">PERSONALIZE YOUR FLOW</p><h2 id="scheduleModalTitle">Edit schedule</h2></div><button class="close-button" id="closeSchedule" aria-label="Close">×</button></div>
+      <p class="modal-help">Edit the default weekday blocks. After-midnight times belong to the shift that started the previous evening.</p>
+      <div id="scheduleEditor"></div>
+      <div class="modal-actions"><button class="secondary-button" id="resetSchedule">Restore defaults</button><button class="primary-button" id="saveSchedule">Save changes</button></div>
+    </section>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>
